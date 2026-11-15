@@ -8,7 +8,8 @@ public class JavaConfigDemoApp {
 	public static void main(String[] args) {
 
 		AnnotationConfigApplicationContext context = 
-				new AnnotationConfigApplicationContext(SportConfig.class);
+				new AnnotationConfigApplicationContext(
+						SportConfig.class, TennisCoach.class, RandomFortuneService.class);
 		
 		Coach theCoach = context.getBean("tennisCoach", Coach.class);
 		
