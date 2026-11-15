@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 
@@ -10,15 +10,15 @@
 
 <body>
 
-The student is confirmed: ${student.firstName} ${student.lastName}
+The student is confirmed: <c:out value="${student.firstName}" /> <c:out value="${student.lastName}" />
 
 <br><br>
 
-Country: ${student.country}
+Country: <c:out value="${student.country}" />
 
 <br><br>
 
-Favorite Language: ${student.favoriteLanguage}
+Favorite Language: <c:out value="${student.favoriteLanguage}" />
 
 <br><br>
 
@@ -27,7 +27,7 @@ Operating Systems:
 <ul>
 	<c:forEach var="temp" items="${student.operatingSystems}">
 
-		<li> ${temp} </li>
+		<li> <c:out value="${temp}" /> </li>
 
 	</c:forEach>
 </ul>

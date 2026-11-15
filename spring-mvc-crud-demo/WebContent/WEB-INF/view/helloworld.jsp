@@ -1,3 +1,5 @@
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -7,11 +9,11 @@ Hello World of Spring!
 
 <br><br>
 
-Student name: ${param.studentName}
+Student name: <c:out value="${param.studentName}" />
 
 <br><br>
 
-The message: ${message}
+The message: <c:out value="${message}" />
 
 </body>
 

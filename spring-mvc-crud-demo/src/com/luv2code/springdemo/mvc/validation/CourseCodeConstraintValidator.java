@@ -1,7 +1,7 @@
 package com.luv2code.springdemo.mvc.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class CourseCodeConstraintValidator 
 	implements ConstraintValidator<CourseCode, String> {

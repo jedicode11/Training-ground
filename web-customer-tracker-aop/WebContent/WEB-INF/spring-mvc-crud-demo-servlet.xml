@@ -29,42 +29,29 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          destroy-method="close">
-        <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/web_customer_tracker?useSSL=false&amp;serverTimezone=UTC" />
-        <property name="user" value="springstudent" />
-        <property name="password" value="springstudent" /> 
+	<context:property-placeholder />
 
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<property name="jdbcUrl" value="${TRAINING_DB_URL}" />
+		<property name="username" value="${TRAINING_DB_USERNAME}" />
+		<property name="password" value="${TRAINING_DB_PASSWORD}" />
+		<property name="minimumIdle" value="5" />
+		<property name="maximumPoolSize" value="20" />
+	</bean>
 
-		<property name="initialPoolSize" value="5"/>
-        <property name="minPoolSize" value="5" />
-        <property name="maxPoolSize" value="20" />
-        <property name="maxIdleTime" value="30000" />
-	</bean>  
-	
-  
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="myDataSource" />
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.luv2code.springdemo.entity" />
-		<property name="hibernateProperties">
-		   <props>
-		      <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-		      <prop key="hibernate.show_sql">true</prop>
-		   </props>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
-   </bean>	  
+	</bean>
 
-    
-	<bean id="myTransactionManager"
-            class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    
-    
-	<tx:annotation-driven transaction-manager="myTransactionManager" />
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
 
+	<tx:annotation-driven />
 
 	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
 	

@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 
@@ -10,19 +10,19 @@
 
 <body>
 
-The customer is confirmed: ${customer.firstName} ${customer.lastName}
+The customer is confirmed: <c:out value="${customer.firstName}" /> <c:out value="${customer.lastName}" />
 
 <br><br>
 
-Free passes: ${customer.freePasses}
+Free passes: <c:out value="${customer.freePasses}" />
 
 <br><br>
 
-Postal Code: ${customer.postalCode}
+Postal Code: <c:out value="${customer.postalCode}" />
 
 <br><br>
 
-Course Code: ${customer.courseCode}
+Course Code: <c:out value="${customer.courseCode}" />
 
 </body>
 

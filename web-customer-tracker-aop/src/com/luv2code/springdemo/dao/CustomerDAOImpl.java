@@ -2,69 +2,43 @@ package com.luv2code.springdemo.dao;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Repository;
+
 import com.luv2code.springdemo.entity.Customer;
 
 @Repository
 public class CustomerDAOImpl implements CustomerDAO {
 
-	
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	
+	@PersistenceContext
+	private EntityManager entityManager;
+
 	@Override
 	public List<Customer> getCustomers() {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		
-		Query<Customer> theQuery = 
-				currentSession.createQuery("from Customer order by lastName",
-											Customer.class);
-		
-		List<Customer> customers = theQuery.getResultList();
-		
-		return customers;
+		return entityManager.createQuery("select c from Customer c order by c.lastName", Customer.class)
+				.getResultList();
 	}
-
 
 	@Override
 	public void saveCustomer(Customer theCustomer) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		currentSession.saveOrUpdate(theCustomer);
-		
+		if (theCustomer.getId() == 0) {
+			entityManager.persist(theCustomer);
+		} else {
+			entityManager.merge(theCustomer);
+		}
 	}
-
 
 	@Override
 	public Customer getCustomer(int theId) {
-		
-		// get the current hbrnt session
-		Session currentSession = sessionFactory.getCurrentSession();
-
-		Customer theCustomer = currentSession.get(Customer.class, theId);
-		return theCustomer;
+		return entityManager.find(Customer.class, theId);
 	}
-
 
 	@Override
 	public void deleteCustomer(int theId) {
-
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		Query theQuery = 
-				currentSession.createQuery("delete from Customer where id=:customerId");
-		theQuery.setParameter("customerId", theId);
-		
-		theQuery.executeUpdate();
-		
+		entityManager.createQuery("delete from Customer c where c.id = :customerId")
+				.setParameter("customerId", theId)
+				.executeUpdate();
 	}
-
 }
